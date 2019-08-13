@@ -19,8 +19,9 @@ class WalletService
      */
     public function decimalPlaces(Wallet $object): int
     {
-        $decimalPlaces = $this->getWallet($object)->decimal_places ?: 2;
-        return 10 ** $decimalPlaces;
+        // $decimalPlaces = $this->getWallet($object)->decimal_places ?: 2;
+        // return 10 ** $decimalPlaces;
+        return config('wallet.package.coefficient');
     }
 
     /**
