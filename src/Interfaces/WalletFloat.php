@@ -21,7 +21,7 @@ interface WalletFloat
      * @param bool $confirmed
      * @return Transaction
      */
-    public function withdrawFloat(float $amount, ?array $meta = null, bool $confirmed = true): Transaction;
+    public function withdrawFloat(float $amount, ?array $meta = null, bool $confirmed = true, string $status = 'pending'): Transaction;
 
     /**
      * @param float $amount
@@ -29,7 +29,7 @@ interface WalletFloat
      * @param bool $confirmed
      * @return Transaction
      */
-    public function forceWithdrawFloat(float $amount, ?array $meta = null, bool $confirmed = true): Transaction;
+    public function forceWithdrawFloat(float $amount, ?array $meta = null, bool $confirmed = true, string $status = 'pending'): Transaction;
 
     /**
      * @param Wallet $wallet
@@ -68,4 +68,5 @@ interface WalletFloat
      * @return float
      */
     public function getBalanceFloatAttribute(): float;
+
 }

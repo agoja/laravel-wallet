@@ -38,12 +38,16 @@ trait HasWallet
      *
      * @return Transaction
      */
-    public function deposit(int $amount, ?array $meta = null, bool $confirmed = true): Transaction
-    {
+    public function deposit(
+        int $amount,
+        ?array $meta = null,
+        bool $confirmed = true,
+        string $status = 'signed'
+    ): Transaction {
         $self = $this;
-        return DB::transaction(static function () use ($self, $amount, $meta, $confirmed) {
+        return DB::transaction(function () use ($self, $amount, $meta, $confirmed, $status) {
             return app(CommonService::class)
-                ->deposit($self, $amount, $meta, $confirmed);
+                ->deposit($self, $amount, $meta, $confirmed, $status);
         });
     }
 
@@ -121,17 +125,20 @@ trait HasWallet
 
     /**
      * Withdrawals from the system
-     *
      * @param int $amount
      * @param array|null $meta
      * @param bool $confirmed
-     *
+     * @param string $status
      * @return Transaction
      */
-    public function withdraw(int $amount, ?array $meta = null, bool $confirmed = true): Transaction
-    {
+    public function withdraw(
+        int $amount,
+        ?array $meta = null,
+        bool $confirmed = true,
+        string $status = 'pending'
+    ): Transaction {
         app(CommonService::class)->verifyWithdraw($this, $amount);
-        return $this->forceWithdraw($amount, $meta, $confirmed);
+        return $this->forceWithdraw($amount, $meta, $confirmed, $status);
     }
 
     /**
@@ -159,15 +166,19 @@ trait HasWallet
      * @param int $amount
      * @param array|null $meta
      * @param bool $confirmed
-     *
+     * @param string $status
      * @return Transaction
      */
-    public function forceWithdraw(int $amount, ?array $meta = null, bool $confirmed = true): Transaction
-    {
+    public function forceWithdraw(
+        int $amount,
+        ?array $meta = null,
+        bool $confirmed = true,
+        string $status = 'pending'
+    ): Transaction {
         $self = $this;
-        return DB::transaction(static function () use ($self, $amount, $meta, $confirmed) {
+        return DB::transaction(static function() use ($self, $amount, $meta, $confirmed, $status) {
             return app(CommonService::class)
-                ->forceWithdraw($self, $amount, $meta, $confirmed);
+                ->forceWithdraw($self, $amount, $meta, $confirmed, $status);
         });
     }
 
@@ -183,7 +194,7 @@ trait HasWallet
     public function forceTransfer(Wallet $wallet, int $amount, ?array $meta = null): Transfer
     {
         $self = $this;
-        return DB::transaction(static function () use ($self, $amount, $wallet, $meta) {
+        return DB::transaction(static function() use ($self, $amount, $wallet, $meta) {
             return app(CommonService::class)
                 ->forceTransfer($self, $wallet, $amount, $meta);
         });

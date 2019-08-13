@@ -147,6 +147,29 @@ class Operation
     }
 
     /**
+     * @var string
+     */
+    protected $status;
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return static
+     */
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
      * @return Transaction
      */
     public function create(): Transaction
@@ -174,6 +197,7 @@ class Operation
             'confirmed' => $this->isConfirmed(),
             'amount' => $this->getAmount(),
             'meta' => $this->getMeta(),
+            'status' => $this->getStatus(),
         ];
     }
 

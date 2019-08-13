@@ -70,29 +70,36 @@ class CommonService
      * @param int $amount
      * @param array|null $meta
      * @param bool|null $confirmed
+     * @param string $status
      * @return Transaction
      */
-    public function forceWithdraw(Wallet $wallet, int $amount, ?array $meta, bool $confirmed = true): Transaction
-    {
-        return app(LockService::class)->lock($this, __FUNCTION__, function () use ($wallet, $amount, $meta, $confirmed) {
-            $walletService = app(WalletService::class);
-            $walletService->checkAmount($amount);
+    public function forceWithdraw(
+        Wallet $wallet,
+        int $amount,
+        ?array $meta,
+        bool $confirmed = true,
+        string $status = 'pending'
+    ): Transaction {
+      return app(LockService::class)->lock($this, __FUNCTION__, function () use ($wallet, $amount, $meta, $confirmed, $status) {
+          $walletService = app(WalletService::class);
+          $walletService->checkAmount($amount);
 
-            /**
-             * @var WalletModel $wallet
-             */
-            $wallet = $walletService->getWallet($wallet);
+          /**
+           * @var Wallet $wallet
+           */
+          $wallet = $walletService->getWallet($wallet);
 
-            $transactions = $this->multiOperation($wallet, [
-                (new Operation())
-                    ->setType(Transaction::TYPE_WITHDRAW)
-                    ->setConfirmed($confirmed)
-                    ->setAmount(-$amount)
-                    ->setMeta($meta)
-            ]);
+          $transactions = $this->multiOperation($wallet, [
+              (new Operation())
+                  ->setType(Transaction::TYPE_WITHDRAW)
+                  ->setConfirmed($confirmed)
+                  ->setAmount(-$amount)
+                  ->setMeta($meta)
+                  ->setStatus($status)
+          ]);
 
-            return current($transactions);
-        });
+          return current($transactions);
+      });
     }
 
     /**
@@ -102,27 +109,34 @@ class CommonService
      * @param bool $confirmed
      * @return Transaction
      */
-    public function deposit(Wallet $wallet, int $amount, ?array $meta, bool $confirmed = true): Transaction
-    {
-        return app(LockService::class)->lock($this, __FUNCTION__, function () use ($wallet, $amount, $meta, $confirmed) {
-            $walletService = app(WalletService::class);
-            $walletService->checkAmount($amount);
+    public function deposit(
+        Wallet $wallet,
+        int $amount,
+        ?array $meta,
+        bool $confirmed = true,
+        string $status = 'signed'
+    ): Transaction {
 
-            /**
-             * @var WalletModel $wallet
-             */
-            $wallet = $walletService->getWallet($wallet);
+      return app(LockService::class)->lock($this, __FUNCTION__, function () use ($wallet, $amount, $meta, $confirmed, $status) {
+        $walletService = app(WalletService::class);
+        $walletService->checkAmount($amount);
 
-            $transactions = $this->multiOperation($wallet, [
-                (new Operation())
-                    ->setType(Transaction::TYPE_DEPOSIT)
-                    ->setConfirmed($confirmed)
-                    ->setAmount($amount)
-                    ->setMeta($meta)
-            ]);
+        /**
+        * @var WalletModel $wallet
+        */
+        $wallet = $walletService->getWallet($wallet);
 
-            return current($transactions);
-        });
+        $transactions = $this->multiOperation($wallet, [
+            (new Operation())
+                ->setType(Transaction::TYPE_DEPOSIT)
+                ->setConfirmed($confirmed)
+                ->setAmount($amount)
+                ->setMeta($meta)
+                ->setStatus($status)
+        ]);
+
+        return current($transactions);
+      });
     }
 
     /**

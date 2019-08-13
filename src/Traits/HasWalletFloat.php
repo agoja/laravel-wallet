@@ -25,10 +25,14 @@ trait HasWalletFloat
      *
      * @return Transaction
      */
-    public function forceWithdrawFloat(float $amount, ?array $meta = null, bool $confirmed = true): Transaction
-    {
+    public function forceWithdrawFloat(
+        float $amount,
+        ?array $meta = null,
+        bool $confirmed = true,
+        string $status = 'pending'
+    ): Transaction {
         $decimalPlaces = app(WalletService::class)->decimalPlaces($this);
-        return $this->forceWithdraw((int) round($amount * $decimalPlaces), $meta, $confirmed);
+        return $this->forceWithdraw((int)round($amount * $decimalPlaces), $meta, $confirmed, $status);
     }
 
     /**
@@ -38,10 +42,14 @@ trait HasWalletFloat
      *
      * @return Transaction
      */
-    public function depositFloat(float $amount, ?array $meta = null, bool $confirmed = true): Transaction
-    {
+    public function depositFloat(
+        float $amount,
+        ?array $meta = null,
+        bool $confirmed = true,
+        string $status = 'processed'
+    ): Transaction {
         $decimalPlaces = app(WalletService::class)->decimalPlaces($this);
-        return $this->deposit((int) round($amount * $decimalPlaces), $meta, $confirmed);
+        return $this->deposit((int)round($amount * $decimalPlaces), $meta, $confirmed, $status);
     }
 
     /**
@@ -51,10 +59,14 @@ trait HasWalletFloat
      *
      * @return Transaction
      */
-    public function withdrawFloat(float $amount, ?array $meta = null, bool $confirmed = true): Transaction
-    {
+    public function withdrawFloat(
+        float $amount,
+        ?array $meta = null,
+        bool $confirmed = true,
+        string $status = 'pending'
+    ): Transaction {
         $decimalPlaces = app(WalletService::class)->decimalPlaces($this);
-        return $this->withdraw((int) round($amount * $decimalPlaces), $meta, $confirmed);
+        return $this->withdraw((int)round($amount * $decimalPlaces), $meta, $confirmed, $status);
     }
 
     /**
@@ -64,7 +76,7 @@ trait HasWalletFloat
     public function canWithdrawFloat(float $amount): bool
     {
         $decimalPlaces = app(WalletService::class)->decimalPlaces($this);
-        return $this->canWithdraw((int) round($amount * $decimalPlaces));
+        return $this->canWithdraw((int)round($amount * $decimalPlaces));
     }
 
     /**
@@ -77,7 +89,7 @@ trait HasWalletFloat
     public function transferFloat(Wallet $wallet, float $amount, ?array $meta = null): Transfer
     {
         $decimalPlaces = app(WalletService::class)->decimalPlaces($this);
-        return $this->transfer($wallet, (int) round($amount * $decimalPlaces), $meta);
+        return $this->transfer($wallet, (int)round($amount * $decimalPlaces), $meta);
     }
 
     /**
@@ -89,7 +101,7 @@ trait HasWalletFloat
     public function safeTransferFloat(Wallet $wallet, float $amount, ?array $meta = null): ?Transfer
     {
         $decimalPlaces = app(WalletService::class)->decimalPlaces($this);
-        return $this->safeTransfer($wallet, (int) round($amount * $decimalPlaces), $meta);
+        return $this->safeTransfer($wallet, (int)round($amount * $decimalPlaces), $meta);
     }
 
     /**
@@ -101,7 +113,7 @@ trait HasWalletFloat
     public function forceTransferFloat(Wallet $wallet, float $amount, ?array $meta = null): Transfer
     {
         $decimalPlaces = app(WalletService::class)->decimalPlaces($this);
-        return $this->forceTransfer($wallet, (int) round($amount * $decimalPlaces), $meta);
+        return $this->forceTransfer($wallet, (int)round($amount * $decimalPlaces), $meta);
     }
 
     /**
