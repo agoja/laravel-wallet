@@ -42,6 +42,7 @@ class WalletServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom([
             __DIR__ . '/../database/migrations_v1',
             __DIR__ . '/../database/migrations_v2',
+            __DIR__ . '/../database/migrations_v3',
         ]);
 
         if (function_exists('config_path')) {
@@ -53,6 +54,7 @@ class WalletServiceProvider extends ServiceProvider
         $this->publishes([
             dirname(__DIR__) . '/database/migrations_v1/' => database_path('migrations'),
             dirname(__DIR__) . '/database/migrations_v2/' => database_path('migrations'),
+            dirname(__DIR__) . '/database/migrations_v3/' => database_path('migrations'),
         ], 'laravel-wallet-migrations');
 
         $this->publishes([
@@ -62,6 +64,10 @@ class WalletServiceProvider extends ServiceProvider
         $this->publishes([
             dirname(__DIR__) . '/database/migrations_v2/' => database_path('migrations'),
         ], 'laravel-wallet-migrations-v2');
+
+          $this->publishes([
+            dirname(__DIR__) . '/database/migrations_v3/' => database_path('migrations'),
+        ], 'laravel-wallet-migrations-v3');
     }
 
     /**
