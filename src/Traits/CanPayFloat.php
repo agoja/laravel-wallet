@@ -6,6 +6,7 @@ trait CanPayFloat
 {
     use HasWalletFloat, CanPay {
         CanPay::deposit insteadof HasWalletFloat;
+        CanPay::receive insteadof HasWalletFloat;
         CanPay::withdraw insteadof HasWalletFloat;
         CanPay::canWithdraw insteadof HasWalletFloat;
         CanPay::forceWithdraw insteadof HasWalletFloat;
