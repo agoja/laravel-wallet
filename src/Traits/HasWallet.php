@@ -52,6 +52,28 @@ trait HasWallet
     }
 
     /**
+     * The input means in the system
+     *
+     * @param int $amount
+     * @param array|null $meta
+     * @param bool $confirmed
+     *
+     * @return Transaction
+     */
+    public function receive(
+        int $amount,
+        ?array $meta = null,
+        bool $confirmed = true,
+        string $status = 'signed'
+    ): Transaction {
+        $self = $this;
+        return DB::transaction(function () use ($self, $amount, $meta, $confirmed, $status) {
+            return app(CommonService::class)
+                ->receive($self, $amount, $meta, $confirmed, $status);
+        });
+    }
+
+    /**
      * Magic laravel framework method, makes it
      *  possible to call property balance
      *

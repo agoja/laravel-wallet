@@ -28,6 +28,7 @@ class Transaction extends Model
 
     public const TYPE_DEPOSIT = 'deposit';
     public const TYPE_WITHDRAW = 'withdraw';
+    public const TYPE_RECEIVE = 'receive';
 
     /**
      * @var array

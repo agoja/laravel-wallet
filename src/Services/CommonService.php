@@ -142,6 +142,42 @@ class CommonService
     /**
      * @param Wallet $wallet
      * @param int $amount
+     * @param array|null $meta
+     * @param bool $confirmed
+     * @return Transaction
+     */
+    public function receive(
+        Wallet $wallet,
+        int $amount,
+        ?array $meta,
+        bool $confirmed = true,
+        string $status = 'signed'
+    ): Transaction {
+        return app(LockService::class)->lock($this, __FUNCTION__, function () use ($wallet, $amount, $meta, $confirmed, $status) {
+            $walletService = app(WalletService::class);
+            $walletService->checkAmount($amount);
+
+            /**
+             * @var WalletModel $wallet
+             */
+            $wallet = $walletService->getWallet($wallet);
+
+            $transactions = $this->multiOperation($wallet, [
+                (new Operation())
+                    ->setType(Transaction::TYPE_RECEIVE)
+                    ->setConfirmed($confirmed)
+                    ->setAmount($amount)
+                    ->setMeta($meta)
+                    ->setStatus($status)
+            ]);
+
+            return current($transactions);
+        });
+    }
+
+    /**
+     * @param Wallet $wallet
+     * @param int $amount
      * @param bool $allowZero
      * @return void
      * @throws BalanceIsEmpty

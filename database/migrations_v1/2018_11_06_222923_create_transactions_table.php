@@ -20,7 +20,7 @@ class CreateTransactionsTable extends Migration
         Schema::create($this->table(), function (Blueprint $table) {
             $table->increments('id');
             $table->morphs('payable');
-            $table->enum('type', ['deposit', 'withdraw'])->index();
+            $table->enum('type', ['deposit', 'withdraw', 'receive'])->index();
             $table->bigInteger('amount');
             $table->boolean('confirmed');
             $this->json($table, 'meta')->nullable();
