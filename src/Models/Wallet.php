@@ -9,8 +9,9 @@ use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Services\WalletService;
 use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\CanExchange;
-use Bavix\Wallet\Traits\CanPayFloat;
 use Bavix\Wallet\Traits\HasGift;
+use Bavix\Wallet\Traits\HasWallet;
+use Bavix\Wallet\Traits\HasWalletFloat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
@@ -32,7 +33,8 @@ class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchan
 
     use CanConfirm;
     use CanExchange;
-    use CanPayFloat;
+    use HasWalletFloat;
+    use HasWallet;
     use HasGift;
 
     /**
