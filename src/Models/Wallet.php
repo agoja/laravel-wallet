@@ -3,14 +3,11 @@
 namespace Bavix\Wallet\Models;
 
 use Bavix\Wallet\Interfaces\Confirmable;
-use Bavix\Wallet\Interfaces\Customer;
 use Bavix\Wallet\Interfaces\Exchangeable;
 use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Services\WalletService;
 use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\CanExchange;
-use Bavix\Wallet\Traits\HasGift;
-use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -28,14 +25,12 @@ use function config;
  * @property \Bavix\Wallet\Interfaces\Wallet $holder
  * @property-read string $currency
  */
-class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchangeable
+class Wallet extends Model implements WalletFloat, Confirmable, Exchangeable
 {
 
     use CanConfirm;
     use CanExchange;
     use HasWalletFloat;
-    use HasWallet;
-    use HasGift;
 
     /**
      * @var array

@@ -5,7 +5,7 @@ namespace Bavix\Wallet\Interfaces;
 use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
 
-interface WalletFloat
+interface WalletFloat extends Wallet
 {
     /**
      * @param float $amount
